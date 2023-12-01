@@ -11,6 +11,7 @@ import health_pb2_grpc
 class OrderLogService(demo_pb2_grpc.LogServiceServicer):
     
     def __init__(self):
+        print("Generated Service...")
         self.logs = {}
         self.log_lock = threading.Lock() 
         self.id = 0
@@ -61,7 +62,7 @@ class OrderLogService(demo_pb2_grpc.LogServiceServicer):
         
 def serve():
     try:
-        print("V 1.0")
+        print("Version 2.0")
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         service = OrderLogService()
         demo_pb2_grpc.add_LogServiceServicer_to_server(service, server)
