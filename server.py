@@ -51,6 +51,7 @@ class OrderLogService(demo_pb2_grpc.LogServiceServicer):
         
 def serve():
     try:
+        print("V 1.0")
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         demo_pb2_grpc.add_LogServiceServicer_to_server(OrderLogService(), server)
         server.add_insecure_port('[::]:03138')
