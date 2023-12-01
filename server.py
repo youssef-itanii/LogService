@@ -1,10 +1,12 @@
 from concurrent import futures
+import time
 import grpc
 from demo_pb2 import (OrderLog , AddLogRequest, GetLogRequest , Empty)
 import demo_pb2_grpc
 import threading
 import json
-
+import health_pb2
+import health_pb2_grpc
 
 class OrderLogService(demo_pb2_grpc.LogServiceServicer):
     
@@ -48,17 +50,32 @@ class OrderLogService(demo_pb2_grpc.LogServiceServicer):
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details('Log entry not found')
             return "Not Found"
+    
+    def Check(self, request, context):
+        return health_pb2.HealthCheckResponse(
+            status=health_pb2.HealthCheckResponse.SERVING)
 
+    def Watch(self, request, context):
+        return health_pb2.HealthCheckResponse(
+            status=health_pb2.HealthCheckResponse.UNIMPLEMENTED)
         
 def serve():
     try:
         print("V 1.0")
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-        demo_pb2_grpc.add_LogServiceServicer_to_server(OrderLogService(), server)
+        service = OrderLogService()
+        demo_pb2_grpc.add_LogServiceServicer_to_server(service, server)
+        health_pb2_grpc.add_HealthServicer_to_server(service, server)
+
         server.add_insecure_port('[::]:3138')
         server.start()
         print("Log Server started. Listening on port 3138.")
         server.wait_for_termination()
+        # try:
+        #  while True:
+        #     time.sleep(10000)
+        # except KeyboardInterrupt:
+        #         server.stop(0)
     except Exception as e:
         print(f"An error occurred: {e} ")
 

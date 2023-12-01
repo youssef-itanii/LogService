@@ -20,7 +20,10 @@
 #
 # requires gRPC tools:
 #   pip install -r requirements.txt
-protodir=../../protos
-python3 -m grpc_tools.protoc -I $protodir --python_out=. --grpc_python_out=. ../../protos/demo.proto
+# protodir=../../protos
+# python3 -m grpc_tools.protoc -I $protodir --python_out=. --grpc_python_out=. ../../protos/demo.proto
+
+
+python3 -m grpc_tools.protoc -I . --python_out=. --grpc_python_out=. health.proto
 
 # [END gke_recommendationservice_genproto]
