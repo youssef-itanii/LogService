@@ -70,12 +70,11 @@ def serve():
         server.add_insecure_port('[::]:3138')
         server.start()
         print("Log Server started. Listening on port 3138.")
-        server.wait_for_termination()
-        # try:
-        #  while True:
-        #     time.sleep(10000)
-        # except KeyboardInterrupt:
-        #         server.stop(0)
+        try:
+            while True:
+                time.sleep(10000)
+        except KeyboardInterrupt:
+                server.stop(0)
     except Exception as e:
         print(f"An error occurred: {e} ")
 
