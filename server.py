@@ -1,12 +1,12 @@
 from concurrent import futures
 import grpc
-from orderlog_pb2 import (OrderLog , AddLogRequest, GetLogRequest , Empty)
-import orderlog_pb2_grpc
+from demo_pb2 import (OrderLog , AddLogRequest, GetLogRequest , Empty)
+import demo_pb2_grpc
 import threading
 import json
 
 
-class OrderLogService(orderlog_pb2_grpc.LogServiceServicer):
+class OrderLogService(demo_pb2_grpc.LogServiceServicer):
     
     def __init__(self):
         self.logs = {}
@@ -52,7 +52,7 @@ class OrderLogService(orderlog_pb2_grpc.LogServiceServicer):
 def serve():
     try:
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-        orderlog_pb2_grpc.add_LogServiceServicer_to_server(OrderLogService(), server)
+        demo_pb2_grpc.add_LogServiceServicer_to_server(OrderLogService(), server)
         server.add_insecure_port('[::]:03138')
         server.start()
         print("Log Server started. Listening on port 03138.")
