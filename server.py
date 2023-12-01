@@ -54,9 +54,9 @@ def serve():
         print("V 1.0")
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         demo_pb2_grpc.add_LogServiceServicer_to_server(OrderLogService(), server)
-        server.add_insecure_port('[::]:03138')
+        server.add_insecure_port('[::]:3138')
         server.start()
-        print("Log Server started. Listening on port 03138.")
+        print("Log Server started. Listening on port 3138.")
         server.wait_for_termination()
     except Exception as e:
         print(f"An error occurred: {e} ")

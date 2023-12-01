@@ -31,8 +31,8 @@ COPY --from=builder /usr/local/lib/python3.10/ /usr/local/lib/python3.10/
 COPY . .
 
 # Set the listen port
-ENV PORT "03138"
-EXPOSE 03138
+ENV PORT "3138"
+EXPOSE 3138
 
 # Define the entry point for the container
 CMD ["python", "server.py"]
