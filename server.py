@@ -13,9 +13,9 @@ class OrderLogService(demo_pb2_grpc.LogServiceServicer):
     def __init__(self):
         print("Generated Service...")
         self.logs = {}
-        self.log_lock = threading.Lock() 
+
         self.id = 0
-        self.id_lock = threading.Lock()
+
     
     def AddLog(self, request, context):
         try:
@@ -23,15 +23,12 @@ class OrderLogService(demo_pb2_grpc.LogServiceServicer):
             order_id = request.order_id
             items = request.items
             new_order_log = OrderLog(user_id = user_id, order_id = order_id,items = items)
-            with self.log_lock :
-                with self.id_lock:
-                    self.logs[self.id] = new_order_log
-                    self.id+=1
-                    new_req = {self.id : new_order_log}
-                    # with open("data.log", 'a') as file:
-                    #     file.write(f"New log #{self.id}: User #{user_id} of order #{order_id} ordered: {items}" + '\n')
+           
+            self.logs[self.id] = new_order_log
+            self.id+=1
+            new_req = {self.id : new_order_log}
+            print(f"LOG #{self.id}: User {user_id} has placed an order:\n - Order ID: {order_id} \n - Items: {items}")
 
-                    print(f"Added new log entry {new_order_log}")
             return Empty()
         except Exception as e:
             context.set_code(grpc.StatusCode.UNKNOWN)
