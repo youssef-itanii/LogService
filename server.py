@@ -28,8 +28,8 @@ class OrderLogService(demo_pb2_grpc.LogServiceServicer):
                     self.logs[self.id] = new_order_log
                     self.id+=1
                     new_req = {self.id : new_order_log}
-                    with open("data.log", 'a') as file:
-                        file.write(f"New log #{self.id}: User #{user_id} of order #{order_id} ordered: {items}" + '\n')
+                    # with open("data.log", 'a') as file:
+                    #     file.write(f"New log #{self.id}: User #{user_id} of order #{order_id} ordered: {items}" + '\n')
 
                     print(f"Added new log entry {new_order_log}")
             return Empty()
@@ -67,9 +67,10 @@ def serve():
         service = OrderLogService()
         demo_pb2_grpc.add_LogServiceServicer_to_server(service, server)
         health_pb2_grpc.add_HealthServicer_to_server(service, server)
-
+        
         server.add_insecure_port('[::]:3138')
         server.start()
+        
         print("Log Server started. Listening on port 3138.")
         try:
             while True:
